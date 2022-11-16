@@ -2,8 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  // const API_KEY = "04j6E74Vs2lH7YDeGGqPdQ";
-
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
   const getCompany = async () => {
