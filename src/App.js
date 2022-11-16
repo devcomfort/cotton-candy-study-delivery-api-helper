@@ -7,7 +7,6 @@ function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
   const getCompany = async () => {
-    console.log(API_KEY);
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`);
     const json = await res.json();
     setCompany(json.Company);
