@@ -1,15 +1,14 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-
+import dontenv from "dotenv";
+dontenv.config();
 function App() {
   // const API_KEY = "04j6E74Vs2lH7YDeGGqPdQ";
-  const config = {
-    API_KEY: process.env.REACT_API_KEY,
-  };
+
+  const API_KEY = process.env.REACT_API_KEY;
   const [company, setCompany] = useState([]);
-  const [choice, setChoice] = useState("");
   const getCompany = async () => {
-    const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=%${config.API_KEY}%`);
+    const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${config.API_KEY}`);
     const json = await res.json();
     setCompany(json.Company);
   };
@@ -25,15 +24,7 @@ function App() {
           <h3 className="menu-title">메인메뉴</h3>
           <p className="menu-sub">조회할 택배사를 고른 후 운송장 번호를 기입하시오</p>
         </div>
-        <select
-          className="companylist"
-          onClick={(e) => {
-            let copy = [...e.target.value];
-            setChoice(copy);
-
-            console.log(copy, e.target.value);
-          }}
-        >
+        <select className="companylist">
           {company.map((name, i) => {
             return <option key={i}>{name.Name}</option>;
           })}
