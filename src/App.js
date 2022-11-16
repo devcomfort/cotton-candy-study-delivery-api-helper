@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     getCompany();
   }, []);
-  // console.log(company);
 
   return (
     <div className="App">
