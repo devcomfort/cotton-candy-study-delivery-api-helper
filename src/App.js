@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
+  const [billing, setBilling] = useState();
+  const [choice, setChoice] = useState();
   const getCompany = async () => {
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`);
     const json = await res.json();
@@ -13,6 +15,8 @@ function App() {
     getCompany();
   }, []);
 
+  const handleSelect = (e) => setChoice(e.target.value);
+
   return (
     <div className="App">
       <div className="wrap">
@@ -20,13 +24,28 @@ function App() {
           <h3 className="menu-title">메인메뉴</h3>
           <p className="menu-sub">조회할 택배사를 고른 후 운송장 번호를 기입하시오</p>
         </div>
-        <select className="companylist">
+        <select className="companylist" onChange={handleSelect} value={choice}>
           {company.map((name, i) => {
-            return <option key={i}>{name.Name}</option>;
+            return (
+              <option key={i} value={name.Code}>
+                {name.Name}
+              </option>
+            );
           })}
         </select>
-        <form className="waybill" method="get">
-          <input type="text" placeholder="운송장 번호를 입력하시오"></input>
+
+        <form
+          className="waybill"
+          action={`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`}
+          method="post"
+        >
+          <input
+            type="text"
+            placeholder="운송장 번호를 입력하시오"
+            onInput={(e) => {
+              setBilling(e.target.value);
+            }}
+          ></input>
           <div>
             <button className="btn">운송장 조회</button>
           </div>
