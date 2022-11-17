@@ -2,8 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-	// const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
-	const API_KET = "";
+	const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
 	const [company, setCompany] = useState([]);
 	const [billing, setBilling] = useState();
 	const [choice, setChoice] = useState();
@@ -27,7 +26,7 @@ function App() {
 			{/* {modal === true ? <Modal /> : null} */}
 			<div className="wrap">
 				<div className="menu-box">
-					<h3 className="menu-title">메인메뉴</h3>
+					<h1 className="menu-title">메인메뉴</h1>
 					<p className="menu-sub">
 						조회할 택배사를 고른 후 운송장 번호를 기입하시오
 					</p>
