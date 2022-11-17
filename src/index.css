@@ -1,5 +1,6 @@
 /* main.jsx를 통해 index.html에 적용되는 기본 파일 */
 
-:root {
+html,
+body {
 	margin: 0;
 }

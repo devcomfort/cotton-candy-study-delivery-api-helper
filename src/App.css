@@ -1,41 +1,30 @@
+/* 참조: https://studiomeal.com/archives/197 (이번에야말로 CSS Flex를 익혀보자) */
+
 .App {
 	width: 100%;
-	height: -webkit-fill-available;
+	height: 100vh;
 	background-color: blanchedalmond;
 }
 
 .wrap {
+	/* 상하 여백 생성 및 간격 맞추기 */
+	padding: 1rem 0 2rem 0;
+	/* 상하 위치 조절; 참조: https://m.blog.naver.com/brusher3063/221692760140 */
+	transform: translateY(18rem);
+
 	background-color: white;
 	text-align: center;
-	/* max-width: 800px; */
-	margin: 300px auto 0 auto;
-	height: 500px;
+	align-items: center;
 	border-radius: 25px;
-}
-
-.menu-title {
-	margin-top: 25px;
-	font-size: 25px;
-}
-
-.menu-sub {
-	margin: 30px 0;
-}
-
-.companylist {
-	width: 100%;
-	max-width: 450px;
-	height: 40px;
-	text-align: center;
-	border-radius: 7px;
-	border: 1px solid rgba(0, 0, 0, 0.5);
+	line-height: 1rem;
 }
 
 .waybill {
 	margin-top: 30px;
 }
 
-.waybill input {
+.waybill input,
+.companylist {
 	width: 100%;
 	max-width: 450px;
 	text-align: center;
@@ -47,14 +36,12 @@
 
 .btn {
 	margin-top: 25px;
-	width: 100%;
-	max-width: 100px;
+	width: 100px;
 	height: 40px;
 	border: none;
 	border-radius: 5px;
 	background-color: bisque;
 	color: rgba(0, 0, 0, 0.6);
-	cursor: pointer;
 }
 
 .modal {
