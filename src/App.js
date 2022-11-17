@@ -1,11 +1,11 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-
 function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
   const [billing, setBilling] = useState();
   const [choice, setChoice] = useState();
+  const [modal, setModal] = useState(false);
   const getCompany = async () => {
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`);
     const json = await res.json();
@@ -13,13 +13,16 @@ function App() {
   };
   useEffect(() => {
     getCompany();
+    // eslint-disable-next-line
   }, []);
 
   const handleSelect = (e) => setChoice(e.target.value);
 
   return (
     <div className="App">
+      {modal === true ? <Modal /> : null}
       <div className="wrap">
+        s
         <div className="menu-box">
           <h3 className="menu-title">메인메뉴</h3>
           <p className="menu-sub">조회할 택배사를 고른 후 운송장 번호를 기입하시오</p>
@@ -33,11 +36,10 @@ function App() {
             );
           })}
         </select>
-
         <form
           className="waybill"
-          action={`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`}
-          method="post"
+          // action={`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`}
+          // method="post"
         >
           <input
             type="text"
@@ -47,10 +49,26 @@ function App() {
             }}
           ></input>
           <div>
-            <button className="btn">운송장 조회</button>
+            <button
+              className="btn"
+              onClick={(e) => {
+                e.preventDefault();
+                return billing === "" ? setModal(false) : setModal(true);
+              }}
+            >
+              운송장 조회
+            </button>
           </div>
         </form>
       </div>
+    </div>
+  );
+}
+
+function Modal() {
+  return (
+    <div className="modal">
+      <h5>운송장번호를 공백으로 기입하시면 안됩니다.</h5>
     </div>
   );
 }

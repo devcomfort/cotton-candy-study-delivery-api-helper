@@ -2,6 +2,7 @@
   margin: 0;
   box-sizing: border-box;
   padding: 0.1px;
+  overflow: hidden;
 }
 
 .App {
@@ -61,4 +62,18 @@
   background-color: bisque;
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
+}
+
+.modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 35px;
+  text-align: center;
+}
+
+.modal h5 {
+  position: relative;
+  top: 200px;
 }
