@@ -12,7 +12,7 @@ const MenuBox = styled.div`
 `;
 
 const MenuTitle = styled.div`
-  margin: 20px 0 10px 0;
+  padding: 20px 0 10px 0;
   color: black;
   font-size: 25px;
   font-weigth: bold;
@@ -26,14 +26,13 @@ const SubTitle = styled.div`
 const CompanyList = styled.select`
   width: 400px;
   height: 45px;
-  margin-top: 30px;
+  margin-top: 50px;
   border: none;
   border-radius: 5px;
   text-align: center;
 `;
 
 const BillingInput = styled.input`
-  width: 400px;
   width: 400px;
   height: 45px;
   margin-top: 30px;
@@ -50,6 +49,20 @@ const SubmitBtn = styled.button`
   border-radius: 5px;
   text-align: center;
   display: block;
+`;
+
+const ModalBox = styled.div`
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  text-align: center;
+  padding-top: 250px;
+`;
+
+const ModalText = styled.span`
+  font-size: 30px;
+  text-decoration: underline;
 `;
 
 function App() {
@@ -74,7 +87,7 @@ function App() {
       <MenuBox>
         <MenuTitle>메인메뉴</MenuTitle>
         <SubTitle>조회할 택배사를 고른 후 운송장 번호를 기입하시오</SubTitle>
-        <CompanyList className="companylist" onChange={(e) => setChoice(e.target.value)} value={choice}>
+        <CompanyList onChange={(e) => setChoice(e.target.value)} value={choice}>
           {company.map((name, i) => {
             return (
               <option key={i} value={name.Code}>
@@ -91,7 +104,6 @@ function App() {
           }}
         ></BillingInput>
         <SubmitBtn
-          className="btn"
           onClick={(e) => {
             e.preventDefault();
             return billing === undefined ? setModal(true) : setModal(false);
@@ -100,16 +112,15 @@ function App() {
           운송장 조회
         </SubmitBtn>
       </MenuBox>
-      <div></div>
     </div>
   );
 }
 
 function Modal(props) {
   return (
-    <div className="modal">
-      <h5>운송장번호를 공백으로 기입하시면 안됩니다.</h5>
-    </div>
+    <ModalBox>
+      <ModalText>운송장번호를 공백으로 기입하시면 안됩니다.</ModalText>
+    </ModalBox>
   );
 }
 
