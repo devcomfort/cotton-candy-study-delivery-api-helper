@@ -68,6 +68,7 @@ const ModalText = styled.span`
 function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
+  const [location, setLocation] = useState([]);
   const [billing, setBilling] = useState();
   const [choice, setChoice] = useState();
   const [modal, setModal] = useState(false);
@@ -75,6 +76,12 @@ function App() {
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`);
     const json = await res.json();
     setCompany(json.Company);
+  };
+  const billingData = async () => {
+    const res = await fetch(`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`);
+    const json = await res.json();
+    console.log(json);
+    setLocation(json.data);
   };
   useEffect(() => {
     getCompany();
@@ -103,10 +110,11 @@ function App() {
             setBilling(e.target.value);
           }}
         ></BillingInput>
+
         <SubmitBtn
           onClick={(e) => {
-            e.preventDefault();
-            return billing === undefined ? setModal(true) : setModal(false);
+            console.log(location);
+            // console.log(location.trackingDetails[0].kind);
           }}
         >
           운송장 조회
@@ -123,5 +131,4 @@ function Modal(props) {
     </ModalBox>
   );
 }
-
 export default App;
