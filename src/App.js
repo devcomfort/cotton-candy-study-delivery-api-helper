@@ -114,7 +114,6 @@ function App() {
         <SubmitBtn
           onClick={(e) => {
             console.log(location);
-            // console.log(location.trackingDetails[0].kind);
           }}
         >
           운송장 조회
