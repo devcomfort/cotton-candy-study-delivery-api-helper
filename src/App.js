@@ -8,7 +8,7 @@ const MenuBox = styled.div`
   max-width: 550px;
   background-color: antiquewhite;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 15px;
 `;
 
 const MenuTitle = styled.div`
@@ -81,7 +81,8 @@ function App() {
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`);
     const json = await res.json();
     console.log(json);
-    setLocation(json.data);
+    setLocation(json);
+    console.log(location);
   };
   useEffect(() => {
     getCompany();
@@ -94,7 +95,13 @@ function App() {
       <MenuBox>
         <MenuTitle>메인메뉴</MenuTitle>
         <SubTitle>조회할 택배사를 고른 후 운송장 번호를 기입하시오</SubTitle>
-        <CompanyList onChange={(e) => setChoice(e.target.value)} value={choice}>
+        <CompanyList
+          onInput={(e) => {
+            const value = e.target.value;
+            setChoice(value);
+            return value;
+          }}
+        >
           {company.map((name, i) => {
             return (
               <option key={i} value={name.Code}>
@@ -110,14 +117,7 @@ function App() {
             setBilling(e.target.value);
           }}
         ></BillingInput>
-
-        <SubmitBtn
-          onClick={(e) => {
-            console.log(location);
-          }}
-        >
-          운송장 조회
-        </SubmitBtn>
+        <SubmitBtn onClick={(e) => billingData()}>운송장 조회</SubmitBtn>
       </MenuBox>
     </div>
   );
