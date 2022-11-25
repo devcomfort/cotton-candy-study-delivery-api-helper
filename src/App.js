@@ -54,9 +54,8 @@ const SubmitBtn = styled.button`
 function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
-  const [location, setLocation] = useState([]);
   const [billing, setBilling] = useState();
-  const [choice, setChoice] = useState();
+  const [test, setTest] = useState();
   const getCompany = async () => {
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`);
     const json = await res.json();
@@ -73,35 +72,27 @@ function App() {
         <MenuTitle>메인메뉴</MenuTitle>
         <SubTitle>조회할 택배사를 고른 후 운송장 번호를 기입하시오</SubTitle>
         <CompanyList
-          onInput={(e) => {
-            const value = e.target.value;
-            setChoice(value);
-            return value;
+          onChange={(e) => {
+            let value = e.target.value;
+            return setCompany((prev) => (prev = value));
           }}
         >
           {company.map((name, i) => {
-            return (
-              <option key={i} value={name.Code}>
-                {name.Name}
-              </option>
-            );
+            return <option key={i}>{name.Name}</option>;
           })}
         </CompanyList>
-        <BillingInput
-          type="text"
-          placeholder="운송장 번호를 입력하시오"
-          onInput={(e) => {
-            setBilling(e.target.value);
-          }}
-        ></BillingInput>
+        <BillingInput type="text" placeholder="운송장 번호를 입력하시오" onInput={(e) => setTest((prev) => (prev = e.target.value))}></BillingInput>
         <SubmitBtn
+          type="submit"
           onClick={(e) => {
+            e.preventDefault();
             const billingData = async () => {
-              const res = await fetch(`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`);
+              const res = await fetch(`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${billing}&t_invoice=${test}&t_key=${API_KEY}`);
               const json = await res.json();
-              setLocation(json);
-              console.log(location);
+              setBilling((prev) => (prev = json));
+              console.log(res);
             };
+            console.log(billing);
             return billingData();
           }}
         >
