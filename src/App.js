@@ -51,38 +51,16 @@ const SubmitBtn = styled.button`
   display: block;
 `;
 
-const ModalBox = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  text-align: center;
-  padding-top: 250px;
-`;
-
-const ModalText = styled.span`
-  font-size: 30px;
-  text-decoration: underline;
-`;
-
 function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const [company, setCompany] = useState([]);
   const [location, setLocation] = useState([]);
   const [billing, setBilling] = useState();
   const [choice, setChoice] = useState();
-  const [modal, setModal] = useState(false);
   const getCompany = async () => {
     const res = await fetch(`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`);
     const json = await res.json();
     setCompany(json.Company);
-  };
-  const billingData = async () => {
-    const res = await fetch(`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`);
-    const json = await res.json();
-    console.log(json);
-    setLocation(json);
-    console.log(location);
   };
   useEffect(() => {
     getCompany();
@@ -91,7 +69,6 @@ function App() {
 
   return (
     <div className="App">
-      {modal === true ? <Modal modal={modal} /> : null}
       <MenuBox>
         <MenuTitle>메인메뉴</MenuTitle>
         <SubTitle>조회할 택배사를 고른 후 운송장 번호를 기입하시오</SubTitle>
@@ -117,17 +94,22 @@ function App() {
             setBilling(e.target.value);
           }}
         ></BillingInput>
-        <SubmitBtn onClick={(e) => billingData()}>운송장 조회</SubmitBtn>
+        <SubmitBtn
+          onClick={(e) => {
+            const billingData = async () => {
+              const res = await fetch(`https://info.sweettracker.co.kr/api/v1/trackingInfo?t_code=${choice}&t_invoice=${billing}&t_key=${API_KEY}`);
+              const json = await res.json();
+              setLocation(json);
+              console.log(location);
+            };
+            return billingData();
+          }}
+        >
+          운송장 조회
+        </SubmitBtn>
       </MenuBox>
     </div>
   );
 }
 
-function Modal(props) {
-  return (
-    <ModalBox>
-      <ModalText>운송장번호를 공백으로 기입하시면 안됩니다.</ModalText>
-    </ModalBox>
-  );
-}
 export default App;
