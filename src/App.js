@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useQuery } from "react-query";
 
 const MenuBox = styled.div`
 	width: 550px;
@@ -51,32 +52,44 @@ const SubmitBtn = styled.button`
 	display: block;
 `;
 
+/**
+ * @typedef {object} DeliveryForm
+ * @property {string} chocie 택배사 ID
+ * @property {string} invoice 송장 번호
+ */
+
 function App() {
 	const API_KEY = process.env.REACT_APP_API_KEY;
-	const [company, setCompany] = useState([]);
 
 	const [location, setLocation] = useState({});
 	const [billing, setBilling] = useState();
 	const [choice, setChoice] = useState();
-	const getCompany = async () => {
-		const res = await fetch(
-			`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`
-		);
-		const json = await res.json();
-		setCompany(json.Company);
+	const {
+		isLoading,
+		isError,
+		data: Company,
+	} = useQuery(
+		"company-data",
+		() =>
+			fetch(
+				`https://info.sweettracker.co.kr/api/v1/companylist?t_key=${API_KEY}`
+			).then((response) => response.json()),
+		{
+			retry: 5,
+			onSuccess: (data) => {
+				setChoice(data.Company[0].Code);
+			},
+		}
+	);
 
-		console.log(json.Company);
-		setChoice(json.Company[0].Code);
-	};
 	useEffect(() => {
-		getCompany();
-		// eslint-disable-next-line
-	}, []);
-
-	// location observer
-	useEffect(() => {
-		console.log(`location is`, location);
+		console.log(location);
+		/** location 처리 코드 */
 	}, [location]);
+
+	if (isLoading) return <>Loading...</>;
+
+	if (isError) return <>Error!</>;
 
 	return (
 		<div className="App">
@@ -86,12 +99,11 @@ function App() {
 				<CompanyList
 					onInput={(e) => {
 						const value = e.target.value;
-						console.log(`setChoice to ${value}`);
 						setChoice(value);
 						return value;
 					}}
 				>
-					{company.map((name, i) => {
+					{Company?.Company?.map((name, i) => {
 						return (
 							<option key={i} value={name.Code} selected={choice.Code === name}>
 								{name.Name}
@@ -103,7 +115,6 @@ function App() {
 					type="text"
 					placeholder="운송장 번호를 입력하시오"
 					onInput={(e) => {
-						console.log(`setBilling to ${e.target.value}`);
 						setBilling(e.target.value);
 					}}
 				></BillingInput>
